@@ -4,3 +4,4 @@
 #endif // PROTOTIPOS_H
 
 int* KeyVerification();
+void rotations();
