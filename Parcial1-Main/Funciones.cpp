@@ -59,4 +59,49 @@ int* KeyVerification(){
     return ptrToKey;
 }
 
+void rotations(int **arrSup, int dim){
+    //Funcion que recibira una sola matriz y su dimension y procedera a rotarla
+    // n es la dimension de la matriz
+    int n = dim,**arrSup1;
+
+    //creo una matriz vacia pero de igual tamaño que la ingresada
+    arrSup1 = new int*[dim];
+    for(int i=0;i<n;i++){
+        arrSup1[i] = new int[dim];
+    }
+
+    //Estado 1 (90 grados)
+    for(int i=0; i<n;i++){
+        for(int j=0; j<n; j++){
+            arrSup1[i][j] = arrSup[n-1-j][i];
+        }
+    }
+    for(int i=0;i<n;i++){
+        delete[] arrSup[i];
+    }
+    delete[] arrSup;
+    arrSup = new int *[5];
+    for(int i=0;i<n;i++){
+        arrSup[i] = new int[5];
+    }
+    //Estado 2 (180 grados)
+    for(int i=0; i<n;i++){
+        for(int j=0; j<n; j++){
+            arrSup[i][j] = arrSup1[n-1-j][i];
+        }
+    }
+    for(int i=0;i<n;i++){
+        delete[] arrSup1[i];
+    }
+    delete[] arrSup1;
+    //Estado 3 (270 grados)
+    for(int i=0; i<n;i++){
+        for(int j=0; j<n; j++){
+            arrSup[i][j] = arrSup1[n-1-j][i];
+        }
+    }
+    //Recordar liberar memoria de arrsup (matriz ingresada)
+}
+
+
 
