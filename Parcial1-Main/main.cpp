@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    int *Key;
+    //int *Key;
     //Despliegue del menu principal y la verificacion de la clave
-    Key = KeyVerification();
+    //Key = KeyVerification();
 }
