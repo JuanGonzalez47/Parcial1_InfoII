@@ -75,8 +75,7 @@ int main(){
     }
     cout<<"Clave ingresada correctamente, trabajaremos para crear la cerrdura X..."<<endl;
     cout<<"-----------------------------------------------------------------------------------------"<<endl;
-    cout<<"La cantidad de matrices son: "<<z+1<<endl;
-    cout<<"La dimension de matrices es: "<<dimMatrix<<endl;
+    //recordar liberar memoria cuando ya no se vaya a usar mas las condiciones (final del programa)
 
 }
 
