@@ -122,28 +122,73 @@ int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state){
                     arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
                 }
             }
+            for(int i=0;i<n;i++){
+                delete[] arrSup[NumberMatrix][i];
+            }
+            delete[] arrSup[NumberMatrix];
+            arrSup[NumberMatrix] = arrSup1;
             break;
         case 2://Estado 2 (180 grados)
-            for(int i=0; i<n;i++){
+            for(int i=0;i<n;i++){
                 for(int j=0; j<n; j++){
                     arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
                 }
             }
+            for(int i=0;i<n;i++){
+                delete[] arrSup[NumberMatrix][i];
+            }
+            delete[] arrSup[NumberMatrix];
+            arrSup[NumberMatrix] = new int*[dim];
+            for(int i=0;i<n;i++){
+                arrSup[NumberMatrix][i] = new int[dim];
+            }
+            for(int i=0; i<n;i++){
+                for(int j=0; j<n; j++){
+                    arrSup[NumberMatrix][i][j] = arrSup1[n-1-j][i];
+                }
+            }
+            delete[] arrSup[NumberMatrix];
+            arrSup[NumberMatrix] = arrSup1;
             break;
         case 3://Estado 3 (270 grados)
+            for(int i=0;i<n;i++){
+                for(int j=0; j<n; j++){
+                    arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
+                }
+            }
+            for(int i=0;i<n;i++){
+                delete[] arrSup[NumberMatrix][i];
+            }
+            delete[] arrSup[NumberMatrix];
+            arrSup[NumberMatrix] = new int*[dim];
+            for(int i=0;i<n;i++){
+                arrSup[NumberMatrix][i] = new int[dim];
+            }
+            for(int i=0; i<n;i++){
+                for(int j=0; j<n; j++){
+                    arrSup[NumberMatrix][i][j] = arrSup1[n-1-j][i];
+                }
+            }
+            for(int i=0;i<n;i++){
+                delete [] arrSup1[i];
+            }
+            delete [] arrSup1;
+            arrSup1 = new int*[dim];
+            for(int i=0;i<n;i++){
+                arrSup1[i] = new int[dim];
+            }
             for(int i=0; i<n;i++){
                 for(int j=0; j<n; j++){
                     arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
                 }
             }
+            for(int i=0;i<n;i++){
+                delete[] arrSup[NumberMatrix][i];
+            }
+            delete[] arrSup[NumberMatrix];
+            arrSup[NumberMatrix] = arrSup1;
             break;
     }
-        for(int i = 0; i < n; i++){
-            delete[] arrSup[NumberMatrix][i];
-        }
-        delete[] arrSup[NumberMatrix];
-        arrSup[NumberMatrix] = arrSup1;
-
         return arrSup;
 }
 
