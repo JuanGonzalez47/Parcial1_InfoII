@@ -3,7 +3,12 @@
 
 #endif // PROTOTIPOS_H
 
-int*** generar_matrices(int n_matrix,int *dimen);
-int* dimensio_variables(int tam_inicial,int n_matrix);
+int*** generar_matrices(int n_matrix,int tam_inicial);
+
+int* dimensio_variables(int n_matrix,int tam_inicial);
+
+void cambiar_dimension_matriz(int ***arreglo,int *dimen,int numberMatrix,int tam_inicial);
+
 int* KeyVerification();
-int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state);
+
+void rotations(int ***arrSup, int dim, int NumberMatrix, int state);
