@@ -59,7 +59,7 @@ int*** generar_matrices(int n_matrix,int *dimen){
 }
 
 
-int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state){
+void rotations(int ***arrSup, int dim, int NumberMatrix, int state){
     //Funcion que recibira el arreglo de matrices, dimension de la que quiero rotar
     //y cual de ellos quiero rotar y procedera a rotarla
     // n es la dimension de la matriz
@@ -104,8 +104,6 @@ int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state){
                     arrSup[NumberMatrix][i][j] = arrSup1[n-1-j][i];
                 }
             }
-            delete[] arrSup[NumberMatrix];
-            arrSup[NumberMatrix] = arrSup1;
             break;
         case 3://Estado 3 (270 grados)
             for(int i=0;i<n;i++){
@@ -146,10 +144,41 @@ int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state){
             arrSup[NumberMatrix] = arrSup1;
             break;
     }
-        return arrSup;
 }
 
-int*** compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, int WichCond, int Pos1, int Pos2, int dimensionMatrixToRotate){
+void cambiar_dimension_matriz(int ***arreglo,int *dimen,int numberMatrix,int tam_inicial){
+    /*funcion que cambia la diemnsion de una matriz individual en arreglo superior, number_matrix esta relacionado con la posicion en el arreglo dim
+     * donde se almacenan el orden de las matrices*/
+
+    int elemento;
+
+    //liberar memoria
+    for (int j = 0; j < tam_inicial; ++j) {
+        delete[] arreglo[numberMatrix][j];
+    }
+    delete[] arreglo[numberMatrix];
+
+    int i=numberMatrix;//solo vamos a rellenar una matriz
+    arreglo[i] = new int*[*(dimen+numberMatrix)];//tamaño depende de la posicion que es igual numero de la matriz almacenada en el arreglo dimen
+    elemento=1;
+    for (int j = 0; j < *(dimen+numberMatrix); ++j) {
+        arreglo[i][j] = new int[*(dimen+numberMatrix)];
+        //rellenar matriz
+        for (int k = 0; k <*(dimen+numberMatrix); ++k) {
+            *(*(*(arreglo+i)+j)+k)=elemento;
+            if(k==(*(dimen+numberMatrix)/2)&&(j==k)){
+                *(*(*(arreglo+i)+j)+k) = 0;
+            }
+            else{
+                elemento++;
+            }
+
+        }
+    }
+}
+
+
+void compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, int WichCond, int Pos1, int Pos2, int dimensionMatrixToRotate){
     //esta funcion recibira el arreglo con las matrices, la posicion a comparar y dos contadores para saber cuales matrices comparar
     //tambien recibira el arreglo que contiene las condiciones para poder comparar y cual condicion se evaluara
     //retornara true en caso de que la condicion se haya cumplido
@@ -165,7 +194,7 @@ int*** compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, 
                     //subir de orden la matriz
                     contRotations++;
                     if(contRotations<3){
-                        ptrPrincipal = rotations(***ptrPrincipal,dimensionMatrixToRotate,cont2,state);
+                        rotations(ptrPrincipal,dimensionMatrixToRotate,cont2,state);
                     }
                     else{
                         //insertar funcion para aumentar dimension
@@ -185,7 +214,7 @@ int*** compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, 
                     contRotations++;
                     if(contRotations<3){
                         //dimensionMatrixToRotate = //insertar funcion que me extraiga dicha dimension
-                        ptrPrincipal = rotations(***ptrPrincipal,dimensionMatrixToRotate,cont2,state);
+                        rotations(ptrPrincipal,dimensionMatrixToRotate,cont2,state);
                     }
                     else{
                         //insertar funcion para aumentar dimension
@@ -204,7 +233,7 @@ int*** compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, 
                     contRotations++;
                     if(contRotations<3){
                         //dimensionMatrixToRotate = //insertar funcion que me extraiga dicha dimension
-                        ptrPrincipal = rotations(***ptrPrincipal,dimensionMatrixToRotate,cont2,state);
+                        rotations(ptrPrincipal,dimensionMatrixToRotate,cont2,state);
                     }
                     else{
                         //insertar funcion para aumentar dimension
@@ -213,7 +242,7 @@ int*** compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, 
             }
             break;
     }
-    return ptrPrincipal;
+
 }
 
 //crear funcion para llevar todo el menu y como tal el proceso de encontrar la ceerradura
