@@ -59,63 +59,6 @@ int*** generar_matrices(int n_matrix,int *dimen){
 }
 
 
-int* KeyVerification(){
-
-    //Funcion que pide la clave K y verifica que esta sea correcta
-    //devuelve true en caso de que este correcta, para continuar con el projecto
-    //de lo contrario se queda pidiendo una contraseña correcta
-
-    int *ptrToKey; int z, m, n, cond; bool value = true, Verify = true;
-
-    cout<<"Ingrese la clave K(m,n,cond1,cond2,...,condz) para la cual quiere generar una cerradura X"<<endl;
-    cout<<"-----------------------------------------------------------------------------------------"<<endl;
-    while(true){
-        cout<<"Ingrese la cantidad de condiciones que va a usar: ";cin>>z;cout<<endl;
-        if (z>1){
-            ptrToKey = new int[z+2];
-            break;
-        }
-        else{
-            cout<<"Ingrese mas de una condicion"<<endl;
-        }
-    }
-    while (true){
-        cout<<"Ingrese m (posicion en filas): ";cin>>m;cout<<endl;
-        if (m>0){
-            ptrToKey[0] = m;
-            break;
-        }
-        else{
-            cout<<"Ingrese un numero entero positivo"<<endl;
-        }
-    }
-    while (true){
-        cout<<"Ingrese n (posicion en columnas): ";cin>>n;cout<<endl;
-        if (n>0){
-            ptrToKey[1] = n;
-            break;
-        }
-        else{
-            cout<<"Ingrese un numero entero positivo"<<endl;
-        }
-    }
-    for(int i = 1;i<=z;i++){
-        while(true){
-            cout<<"Ingrese la condicion numero "<<i<<": ";cin>>cond;cout<<endl;
-            if (cond == 1 || cond == -1 || cond == 0){
-                ptrToKey[i+1] = cond;
-                break;
-            }
-            else{
-                cout<<"Ingrese una condicion valida (-1 o 0 o 1)"<<endl;
-            }
-        }
-    }
-    cout<<"Clave ingresada correctamente, trabajaremos para crear la cerrdura X..."<<endl;
-    cout<<"-----------------------------------------------------------------------------------------"<<endl;
-    return ptrToKey;
-}
-
 int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state){
     //Funcion que recibira el arreglo de matrices, dimension de la que quiero rotar
     //y cual de ellos quiero rotar y procedera a rotarla
@@ -205,6 +148,76 @@ int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state){
     }
         return arrSup;
 }
+
+int*** compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, int WichCond, int Pos1, int Pos2, int dimensionMatrixToRotate){
+    //esta funcion recibira el arreglo con las matrices, la posicion a comparar y dos contadores para saber cuales matrices comparar
+    //tambien recibira el arreglo que contiene las condiciones para poder comparar y cual condicion se evaluara
+    //retornara true en caso de que la condicion se haya cumplido
+    int state = 0, contRotations = 0;
+    switch(ptrCond[WichCond]){
+    case 0: while(true){
+            state++;
+                if (ptrPrincipal[cont1][Pos1][Pos2] == ptrPrincipal[cont2][Pos1][Pos2]){
+                    break;
+                }
+                else{
+                    //insertar funcion para rotar y llevar un conteo de cuntas veces se ha realizado las rotaciones, para saber cuando debo
+                    //subir de orden la matriz
+                    contRotations++;
+                    if(contRotations<3){
+                        ptrPrincipal = rotations(***ptrPrincipal,dimensionMatrixToRotate,cont2,state);
+                    }
+                    else{
+                        //insertar funcion para aumentar dimension
+                        dimensionMatrixToRotate += 2;
+                    }
+                }
+            }
+            break;
+        case 1: while(true){
+                state++;
+                if (ptrPrincipal[cont1][Pos1][Pos2] < ptrPrincipal[cont2][Pos1][Pos2]){
+                    break;
+                }
+                else{
+                    //insertar funcion para rotar y llevar un conteo de cuntas veces se ha realizado las rotaciones, para saber cuando debo
+                    //subir de orden la matriz
+                    contRotations++;
+                    if(contRotations<3){
+                        //dimensionMatrixToRotate = //insertar funcion que me extraiga dicha dimension
+                        ptrPrincipal = rotations(***ptrPrincipal,dimensionMatrixToRotate,cont2,state);
+                    }
+                    else{
+                        //insertar funcion para aumentar dimension
+                    }
+                }
+            }
+            break;
+        case -1: while(true){
+                state++;
+                if (ptrPrincipal[cont1][Pos1][Pos2] > ptrPrincipal[cont2][Pos1][Pos2]){
+                    break;
+                }
+                else{
+                    //insertar funcion para rotar y llevar un conteo de cuntas veces se ha realizado las rotaciones, para saber cuando debo
+                    //subir de orden la matriz
+                    contRotations++;
+                    if(contRotations<3){
+                        //dimensionMatrixToRotate = //insertar funcion que me extraiga dicha dimension
+                        ptrPrincipal = rotations(***ptrPrincipal,dimensionMatrixToRotate,cont2,state);
+                    }
+                    else{
+                        //insertar funcion para aumentar dimension
+                    }
+                }
+            }
+            break;
+    }
+    return ptrPrincipal;
+}
+
+//crear funcion para llevar todo el menu y como tal el proceso de encontrar la ceerradura
+//crear otra funcion para imprimir la cerradura y todo lo que se neceista imprimir
 
 
 
