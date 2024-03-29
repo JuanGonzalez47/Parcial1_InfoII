@@ -102,8 +102,9 @@ int* KeyVerification(){
     return ptrToKey;
 }
 
-void rotations(int **arrSup, int dim){
-    //Funcion que recibira una sola matriz y su dimension y procedera a rotarla
+int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state){
+    //Funcion que recibira el arreglo de matrices, dimension de la que quiero rotar
+    //y cual de ellos quiero rotar y procedera a rotarla
     // n es la dimension de la matriz
     int n = dim,**arrSup1;
 
@@ -112,38 +113,38 @@ void rotations(int **arrSup, int dim){
     for(int i=0;i<n;i++){
         arrSup1[i] = new int[dim];
     }
+    switch (state){
+        case 0://No rotar
+            break;
+        case 1://Estado 1 (90 grados)
+            for(int i=0; i<n;i++){
+                for(int j=0; j<n; j++){
+                    arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
+                }
+            }
+            break;
+        case 2://Estado 2 (180 grados)
+            for(int i=0; i<n;i++){
+                for(int j=0; j<n; j++){
+                    arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
+                }
+            }
+            break;
+        case 3://Estado 3 (270 grados)
+            for(int i=0; i<n;i++){
+                for(int j=0; j<n; j++){
+                    arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
+                }
+            }
+            break;
+    }
+        for(int i = 0; i < n; i++){
+            delete[] arrSup[NumberMatrix][i];
+        }
+        delete[] arrSup[NumberMatrix];
+        arrSup[NumberMatrix] = arrSup1;
 
-    //Estado 1 (90 grados)
-    for(int i=0; i<n;i++){
-        for(int j=0; j<n; j++){
-            arrSup1[i][j] = arrSup[n-1-j][i];
-        }
-    }
-    for(int i=0;i<n;i++){
-        delete[] arrSup[i];
-    }
-    delete[] arrSup;
-    arrSup = new int *[5];
-    for(int i=0;i<n;i++){
-        arrSup[i] = new int[5];
-    }
-    //Estado 2 (180 grados)
-    for(int i=0; i<n;i++){
-        for(int j=0; j<n; j++){
-            arrSup[i][j] = arrSup1[n-1-j][i];
-        }
-    }
-    for(int i=0;i<n;i++){
-        delete[] arrSup1[i];
-    }
-    delete[] arrSup1;
-    //Estado 3 (270 grados)
-    for(int i=0; i<n;i++){
-        for(int j=0; j<n; j++){
-            arrSup[i][j] = arrSup1[n-1-j][i];
-        }
-    }
-    //Recordar liberar memoria de arrsup (matriz ingresada)
+        return arrSup;
 }
 
 
