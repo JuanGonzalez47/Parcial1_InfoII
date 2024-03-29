@@ -3,6 +3,7 @@
 
 #endif // PROTOTIPOS_H
 
-int*** generar_matrices(int n_matrix,int tam_inicial);
+int*** generar_matrices(int n_matrix,int *dimen);
+int* dimensio_variables(int tam_inicial,int n_matrix);
 int* KeyVerification();
 void rotations();
