@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int* dimensio_variables(int tam_inicial,int n_matrix){
+int* dimensio_variables(int n_matrix,int tam_inicial){
 
     /*Arreglo que en cada posicion representa la dimension de cada matriz*/
 
@@ -16,21 +16,21 @@ int* dimensio_variables(int tam_inicial,int n_matrix){
     return dimen;
 }
 
-int*** generar_matrices(int n_matrix,int *dimen){
+int*** generar_matrices(int n_matrix,int tam_inicial){
     int elemento;//numeros de cada posicion en la matriz
 
     // Reserva de memoria para la primera dimensión
     int ***arreglo = new int**[n_matrix];
     // Reserva de memoria para las otras dos dimensiones
     for (int i = 0; i < n_matrix; ++i) {
-        arreglo[i] = new int*[*(dimen+i)];//tamaño depende de la posicion i del arreglo dimen
+        arreglo[i] = new int*[tam_inicial];//tamaño depende de la posicion i del arreglo dimen
         elemento=1;
-        for (int j = 0; j < *(dimen+i); ++j) {
-            arreglo[i][j] = new int[*(dimen+i)];
+        for (int j = 0; j < tam_inicial; ++j) {
+            arreglo[i][j] = new int[tam_inicial];
             //rellenar arreglo
-            for (int k = 0; k < *(dimen+i); ++k) {
+            for (int k = 0; k < tam_inicial; ++k) {
                 *(*(*(arreglo+i)+j)+k)=elemento;
-                if(k==(*(dimen+i)/2)&&(j==k)){
+                if(k==(tam_inicial/2)&&(j==k)){
                     *(*(*(arreglo+i)+j)+k) = 0;
                 }
                 else{
@@ -249,4 +249,24 @@ void compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, in
 //crear otra funcion para imprimir la cerradura y todo lo que se neceista imprimir
 
 
+
+void impresion(int *dimension_final,int *rotacion_final,int n_matrix){
+    /*funcion que imprime la cerradura X y el estado en el que quedo cada matriz*/
+
+    cout<<"cerradura X(";
+    for(int i=0;i<n_matrix;i++){
+        if(i!=(n_matrix-1)){
+            cout<<*(dimension_final+i)<<",";
+        }
+        else{
+            cout<<*(dimension_final+i);
+        }
+    }
+    cout<<")"<<endl;
+
+    for(int i=0;i<n_matrix;i++){
+        cout<<"M"<<i+1<<"("<<*(dimension_final+i)<<"x"<<*(dimension_final+i)<<")"<<" -> Estado: "<<*(rotacion_final+i)<<endl;
+    }
+
+}
 
