@@ -5,4 +5,4 @@
 
 int*** generar_matrices(int n_matrix,int tam_inicial);
 int* KeyVerification();
-void rotations();
+int*** rotations(int ***arrSup, int dim, int NumberMatrix, int state);
