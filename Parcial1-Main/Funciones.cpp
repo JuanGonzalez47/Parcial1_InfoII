@@ -2,20 +2,6 @@
 
 using namespace std;
 
-int* dimensio_variables(int n_matrix,int tam_inicial){
-
-    /*Arreglo que en cada posicion representa la dimension de cada matriz*/
-
-    int *dimen;
-    //reservar memoria
-    dimen= new int[n_matrix];
-
-    for(int i=0;i<n_matrix;i++){
-        *(dimen+i)=tam_inicial;
-    }
-    return dimen;
-}
-
 int*** generar_matrices(int n_matrix,int tam_inicial){
     int elemento;//numeros de cada posicion en la matriz
 
