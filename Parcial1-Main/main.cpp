@@ -8,7 +8,7 @@ int main(){
     //Menu para guardar variables a usar mas adelante, como las condiciones, la posicion y el numero de matrices
     //verificaciones de que las entradas de la clave sean correctas
 
-    int *ptrToKey; int z, m, n, cond, dimMatrix;
+    int *ptrToKey, *dimension, *ptrStates, ***matrix, *ptrorden; int z, m, n, cond, dimMatrix;
 
     cout<<"Ingrese la clave K(m,n,cond1,cond2,...,condz) para la cual quiere generar una cerradura X"<<endl;
     cout<<"-----------------------------------------------------------------------------------------"<<endl;
@@ -16,6 +16,8 @@ int main(){
         cout<<"Ingrese la cantidad de condiciones que va a usar: ";cin>>z;cout<<endl;
         if (z>1){
             ptrToKey = new int[z];
+            ptrStates = new int[z+1];
+            ptrorden = new int[z+1];
             break;
         }
         else{
@@ -77,5 +79,8 @@ int main(){
     cout<<"-----------------------------------------------------------------------------------------"<<endl;
     //recordar liberar memoria cuando ya no se vaya a usar mas las condiciones (final del programa)
 
+    matrix = generar_matrices(z+1,dimMatrix);
+    compareFunction(matrix,ptrToKey,m,n,dimMatrix,z,ptrStates,ptrorden);
 }
+
 
