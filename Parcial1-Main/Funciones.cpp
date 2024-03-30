@@ -196,4 +196,3 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
     impresion(ptrorden,ptrStates,AmountConditions+1);
     //falta eliminar ptrstates, ptrorden, ptrprincipal, ptrcond
 }
-
