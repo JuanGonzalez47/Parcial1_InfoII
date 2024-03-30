@@ -2,44 +2,33 @@
 
 using namespace std;
 
-int*** generar_matrices(int n_matrix,int tam_inicial){
+int*** generar_matrices(int n_matrix,int tamInicial){
     int elemento;//numeros de cada posicion en la matriz
 
     // Reserva de memoria para la primera dimensión
     int ***arreglo = new int**[n_matrix];
     // Reserva de memoria para las otras dos dimensiones
-    for (int i = 0; i < n_matrix; ++i) 
+    for (int i = 0; i < n_matrix; ++i){
         arreglo[i] = new int*[tamInicial];//tamaño depende de la posicion i del arreglo dimen
-        elemento=1;
-        for (int j = 0; j < tamInicial; ++j) {
+    elemento=1;
+        for (int j = 0; j < tamInicial; ++j){
             arreglo[i][j] = new int[tamInicial];
             //rellenar arreglo
             for (int k = 0; k < tamInicial; ++k) {
                 *(*(*(arreglo+i)+j)+k)=elemento;
                 if(k==(tamInicial/2)&&(j==k)){
-                    *(*(*(arreglo+i)+j)+k) = 0;
+                *(*(*(arreglo+i)+j)+k) = 0;
                 }
                 else{
                     elemento++;
                 }
-
             }
         }
     }
-
-    /*Imprimir los elementos del arreglo
-     for (int i = 0; i <n_matrix; ++i) {
-         for (int j = 0; j < *(dimen+i); ++j) {
-             for (int k = 0; k < *(dimen+i); ++k) {
-                 cout <<  *(*(*(arreglo+i)+j)+k) << " ";
-             }
-             cout << endl;
-         }
-         cout << endl;
-     }
-*/
     return arreglo;
 }
+
+
 
 
 int ***rotations(int ***arrSup, int dim, int NumberMatrix){
@@ -65,6 +54,26 @@ int ***rotations(int ***arrSup, int dim, int NumberMatrix){
     arrSup[NumberMatrix] = arrSup1;
 
     return arrSup;
+
+}
+
+void impresion(int *dimension_final,int *rotacion_final,int n_matrix){
+    /*funcion que imprime la cerradura X y el estado en el que quedo cada matriz*/
+
+    cout<<"cerradura X(";
+    for(int i=0;i<n_matrix;i++){
+        if(i!=(n_matrix-1)){
+            cout<<*(dimension_final+i)<<",";
+        }
+        else{
+            cout<<*(dimension_final+i);
+        }
+    }
+    cout<<")"<<endl;
+
+    for(int i=0;i<n_matrix;i++){
+        cout<<"M"<<i+1<<"("<<*(dimension_final+i)<<"x"<<*(dimension_final+i)<<")"<<" -> Estado: "<<*(rotacion_final+i)<<endl;
+    }
 
 }
 
@@ -108,13 +117,15 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
     //retornara true en caso de que la condicion se haya cumplido
     int state = 0, contRotations = 0, cont1 = 0, cont2 = 1, WichCond = 0, InicialSize;
 
+    ptrStates[WichCond] = state;
+    ptrorden[WichCond] = dimensionMatrixToRotate;
     InicialSize = dimensionMatrixToRotate;
     while(WichCond<AmountConditions){
         switch(ptrCond[WichCond]){
         case 0: while(true){
                 if (ptrPrincipal[cont1][Pos1][Pos2] == ptrPrincipal[cont2][Pos1][Pos2]){
-                    ptrStates[WichCond] = state;
-                    ptrorden[WichCond] = dimensionMatrixToRotate;
+                    ptrStates[WichCond+1] = state;
+                    ptrorden[WichCond+1] = dimensionMatrixToRotate;
                     break;
                 }
                 else{
@@ -134,15 +145,15 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
             break;
         case 1: while(true){
                 if (ptrPrincipal[cont1][Pos1][Pos2] < ptrPrincipal[cont2][Pos1][Pos2]){
-                    ptrStates[WichCond] = state;
-                    ptrorden[WichCond] = dimensionMatrixToRotate;
+                    ptrStates[WichCond+1] = state;
+                    ptrorden[WichCond+1] = dimensionMatrixToRotate;
                     break;
                 }
                 else{
                     state++;
                     if(contRotations<3){
-                       contRotations++;
-                       ptrPrincipal = rotations(ptrPrincipal,dimensionMatrixToRotate,cont2);
+                        contRotations++;
+                        ptrPrincipal = rotations(ptrPrincipal,dimensionMatrixToRotate,cont2);
                     }
                     else{
                         ptrPrincipal = cambiar_dimension_matriz(ptrPrincipal,dimensionMatrixToRotate + 2,cont2,dimensionMatrixToRotate);
@@ -155,8 +166,8 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
             break;
         case -1: while(true){
                 if (ptrPrincipal[cont1][Pos1][Pos2] > ptrPrincipal[cont2][Pos1][Pos2]){
-                    ptrStates[WichCond] = state;
-                    ptrorden[WichCond] = dimensionMatrixToRotate;
+                    ptrStates[WichCond+1] = state;
+                    ptrorden[WichCond+1] = dimensionMatrixToRotate;
                     break;
                 }
                 else{
@@ -175,33 +186,13 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
             }
             break;
         }
+        state = 0;
+        contRotations = 0;
         WichCond++;
         cont1 = cont2;
         cont2++;
         dimensionMatrixToRotate = InicialSize;
     }
+    impresion(ptrorden,ptrStates,AmountConditions+1);
+    //falta eliminar ptrstates, ptrorden, ptrprincipal, ptrcond
 }
-
-
-
-
-void impresion(int *dimension_final,int *rotacion_final,int n_matrix){
-    /*funcion que imprime la cerradura X y el estado en el que quedo cada matriz*/
-
-    cout<<"cerradura X(";
-    for(int i=0;i<n_matrix;i++){
-        if(i!=(n_matrix-1)){
-            cout<<*(dimension_final+i)<<",";
-        }
-        else{
-            cout<<*(dimension_final+i);
-        }
-    }
-    cout<<")"<<endl;
-
-    for(int i=0;i<n_matrix;i++){
-        cout<<"M"<<i+1<<"("<<*(dimension_final+i)<<"x"<<*(dimension_final+i)<<")"<<" -> Estado: "<<*(rotacion_final+i)<<endl;
-    }
-
-}
-
