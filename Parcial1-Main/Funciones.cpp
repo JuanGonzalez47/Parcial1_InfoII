@@ -2,50 +2,36 @@
 
 using namespace std;
 
-int*** generar_matrices(int n_matrix,int tam_inicial){
+int*** generar_matrices(int n_matrix,int tamInicial){
     int elemento;//numeros de cada posicion en la matriz
 
     // Reserva de memoria para la primera dimensión
     int ***arreglo = new int**[n_matrix];
     // Reserva de memoria para las otras dos dimensiones
-    for (int i = 0; i < n_matrix; ++i) {
-        arreglo[i] = new int*[tam_inicial];//tamaño depende de la posicion i del arreglo dimen
-        elemento=1;
-        for (int j = 0; j < tam_inicial; ++j) {
-            arreglo[i][j] = new int[tam_inicial];
+    for (int i = 0; i < n_matrix; ++i){
+        arreglo[i] = new int*[tamInicial];//tamaño depende de la posicion i del arreglo dimen
+    elemento=1;
+        for (int j = 0; j < tamInicial; ++j){
+            arreglo[i][j] = new int[tamInicial];
             //rellenar arreglo
-            for (int k = 0; k < tam_inicial; ++k) {
+            for (int k = 0; k < tamInicial; ++k) {
                 *(*(*(arreglo+i)+j)+k)=elemento;
-                if(k==(tam_inicial/2)&&(j==k)){
-                    *(*(*(arreglo+i)+j)+k) = 0;
+                if(k==(tamInicial/2)&&(j==k)){
+                *(*(*(arreglo+i)+j)+k) = 0;
                 }
                 else{
                     elemento++;
                 }
-
             }
         }
     }
-
-
-
-
-    /*Imprimir los elementos del arreglo
-     for (int i = 0; i <n_matrix; ++i) {
-         for (int j = 0; j < *(dimen+i); ++j) {
-             for (int k = 0; k < *(dimen+i); ++k) {
-                 cout <<  *(*(*(arreglo+i)+j)+k) << " ";
-             }
-             cout << endl;
-         }
-         cout << endl;
-     }
-*/
     return arreglo;
 }
 
 
-void rotations(int ***arrSup, int dim, int NumberMatrix, int state){
+
+
+int ***rotations(int ***arrSup, int dim, int NumberMatrix){
     //Funcion que recibira el arreglo de matrices, dimension de la que quiero rotar
     //y cual de ellos quiero rotar y procedera a rotarla
     // n es la dimension de la matriz
@@ -56,185 +42,20 @@ void rotations(int ***arrSup, int dim, int NumberMatrix, int state){
     for(int i=0;i<n;i++){
         arrSup1[i] = new int[dim];
     }
-    switch (state){
-        case 0://No rotar
-            break;
-        case 1://Estado 1 (90 grados)
-            for(int i=0; i<n;i++){
-                for(int j=0; j<n; j++){
-                    arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
-                }
-            }
-            for(int i=0;i<n;i++){
-                delete[] arrSup[NumberMatrix][i];
-            }
-            delete[] arrSup[NumberMatrix];
-            arrSup[NumberMatrix] = arrSup1;
-            break;
-        case 2://Estado 2 (180 grados)
-            for(int i=0;i<n;i++){
-                for(int j=0; j<n; j++){
-                    arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
-                }
-            }
-            for(int i=0;i<n;i++){
-                delete[] arrSup[NumberMatrix][i];
-            }
-            delete[] arrSup[NumberMatrix];
-            arrSup[NumberMatrix] = new int*[dim];
-            for(int i=0;i<n;i++){
-                arrSup[NumberMatrix][i] = new int[dim];
-            }
-            for(int i=0; i<n;i++){
-                for(int j=0; j<n; j++){
-                    arrSup[NumberMatrix][i][j] = arrSup1[n-1-j][i];
-                }
-            }
-            break;
-        case 3://Estado 3 (270 grados)
-            for(int i=0;i<n;i++){
-                for(int j=0; j<n; j++){
-                    arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
-                }
-            }
-            for(int i=0;i<n;i++){
-                delete[] arrSup[NumberMatrix][i];
-            }
-            delete[] arrSup[NumberMatrix];
-            arrSup[NumberMatrix] = new int*[dim];
-            for(int i=0;i<n;i++){
-                arrSup[NumberMatrix][i] = new int[dim];
-            }
-            for(int i=0; i<n;i++){
-                for(int j=0; j<n; j++){
-                    arrSup[NumberMatrix][i][j] = arrSup1[n-1-j][i];
-                }
-            }
-            for(int i=0;i<n;i++){
-                delete [] arrSup1[i];
-            }
-            delete [] arrSup1;
-            arrSup1 = new int*[dim];
-            for(int i=0;i<n;i++){
-                arrSup1[i] = new int[dim];
-            }
-            for(int i=0; i<n;i++){
-                for(int j=0; j<n; j++){
-                    arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
-                }
-            }
-            for(int i=0;i<n;i++){
-                delete[] arrSup[NumberMatrix][i];
-            }
-            delete[] arrSup[NumberMatrix];
-            arrSup[NumberMatrix] = arrSup1;
-            break;
-    }
-}
-
-void cambiar_dimension_matriz(int ***arreglo,int *dimen,int numberMatrix,int tam_inicial){
-    /*funcion que cambia la diemnsion de una matriz individual en arreglo superior, number_matrix esta relacionado con la posicion en el arreglo dim
-     * donde se almacenan el orden de las matrices*/
-
-    int elemento;
-
-    //liberar memoria
-    for (int j = 0; j < tam_inicial; ++j) {
-        delete[] arreglo[numberMatrix][j];
-    }
-    delete[] arreglo[numberMatrix];
-
-    int i=numberMatrix;//solo vamos a rellenar una matriz
-    arreglo[i] = new int*[*(dimen+numberMatrix)];//tamaño depende de la posicion que es igual numero de la matriz almacenada en el arreglo dimen
-    elemento=1;
-    for (int j = 0; j < *(dimen+numberMatrix); ++j) {
-        arreglo[i][j] = new int[*(dimen+numberMatrix)];
-        //rellenar matriz
-        for (int k = 0; k <*(dimen+numberMatrix); ++k) {
-            *(*(*(arreglo+i)+j)+k)=elemento;
-            if(k==(*(dimen+numberMatrix)/2)&&(j==k)){
-                *(*(*(arreglo+i)+j)+k) = 0;
-            }
-            else{
-                elemento++;
-            }
-
+    for(int i=0; i<n;i++){
+        for(int j=0; j<n; j++){
+            arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
         }
     }
-}
-
-
-void compareFunction(int ***ptrPrincipal, int cont1, int cont2, int *ptrCond, int WichCond, int Pos1, int Pos2, int dimensionMatrixToRotate){
-    //esta funcion recibira el arreglo con las matrices, la posicion a comparar y dos contadores para saber cuales matrices comparar
-    //tambien recibira el arreglo que contiene las condiciones para poder comparar y cual condicion se evaluara
-    //retornara true en caso de que la condicion se haya cumplido
-    int state = 0, contRotations = 0;
-    switch(ptrCond[WichCond]){
-    case 0: while(true){
-            state++;
-                if (ptrPrincipal[cont1][Pos1][Pos2] == ptrPrincipal[cont2][Pos1][Pos2]){
-                    break;
-                }
-                else{
-                    //insertar funcion para rotar y llevar un conteo de cuntas veces se ha realizado las rotaciones, para saber cuando debo
-                    //subir de orden la matriz
-                    contRotations++;
-                    if(contRotations<3){
-                        rotations(ptrPrincipal,dimensionMatrixToRotate,cont2,state);
-                    }
-                    else{
-                        //insertar funcion para aumentar dimension
-                        dimensionMatrixToRotate += 2;
-                    }
-                }
-            }
-            break;
-        case 1: while(true){
-                state++;
-                if (ptrPrincipal[cont1][Pos1][Pos2] < ptrPrincipal[cont2][Pos1][Pos2]){
-                    break;
-                }
-                else{
-                    //insertar funcion para rotar y llevar un conteo de cuntas veces se ha realizado las rotaciones, para saber cuando debo
-                    //subir de orden la matriz
-                    contRotations++;
-                    if(contRotations<3){
-                        //dimensionMatrixToRotate = //insertar funcion que me extraiga dicha dimension
-                        rotations(ptrPrincipal,dimensionMatrixToRotate,cont2,state);
-                    }
-                    else{
-                        //insertar funcion para aumentar dimension
-                    }
-                }
-            }
-            break;
-        case -1: while(true){
-                state++;
-                if (ptrPrincipal[cont1][Pos1][Pos2] > ptrPrincipal[cont2][Pos1][Pos2]){
-                    break;
-                }
-                else{
-                    //insertar funcion para rotar y llevar un conteo de cuntas veces se ha realizado las rotaciones, para saber cuando debo
-                    //subir de orden la matriz
-                    contRotations++;
-                    if(contRotations<3){
-                        //dimensionMatrixToRotate = //insertar funcion que me extraiga dicha dimension
-                        rotations(ptrPrincipal,dimensionMatrixToRotate,cont2,state);
-                    }
-                    else{
-                        //insertar funcion para aumentar dimension
-                    }
-                }
-            }
-            break;
+    for(int i=0;i<n;i++){
+        delete[] arrSup[NumberMatrix][i];
     }
+    delete[] arrSup[NumberMatrix];
+    arrSup[NumberMatrix] = arrSup1;
+
+    return arrSup;
 
 }
-
-//crear funcion para llevar todo el menu y como tal el proceso de encontrar la ceerradura
-//crear otra funcion para imprimir la cerradura y todo lo que se neceista imprimir
-
-
 
 void impresion(int *dimension_final,int *rotacion_final,int n_matrix){
     /*funcion que imprime la cerradura X y el estado en el que quedo cada matriz*/
@@ -254,5 +75,125 @@ void impresion(int *dimension_final,int *rotacion_final,int n_matrix){
         cout<<"M"<<i+1<<"("<<*(dimension_final+i)<<"x"<<*(dimension_final+i)<<")"<<" -> Estado: "<<*(rotacion_final+i)<<endl;
     }
 
+}
+
+int*** cambiar_dimension_matriz(int ***arreglo,int dimen,int numberMatrix,int tam_inicial){
+    /*funcion que cambia la diemnsion de una matriz individual en arreglo superior, number_matrix esta relacionado con la posicion en el arreglo dim
+     * donde se almacenan el orden de las matrices*/
+
+    int elemento;
+
+    //liberar memoria
+    for (int j = 0; j < tam_inicial; ++j) {
+        delete[] arreglo[numberMatrix][j];
+    }
+    delete[] arreglo[numberMatrix];
+
+    int i=numberMatrix;//solo vamos a rellenar una matriz
+    arreglo[i] = new int*[dimen];//tamaño depende de la posicion que es igual numero de la matriz almacenada en el arreglo dimen
+    elemento=1;
+    for (int j = 0; j < dimen; ++j) {
+        arreglo[i][j] = new int[dimen];
+        //rellenar matriz
+        for (int k = 0; k < dimen; ++k) {
+            *(*(*(arreglo+i)+j)+k)=elemento;
+            if(k==(dimen/2)&&(j==k)){
+                *(*(*(arreglo+i)+j)+k) = 0;
+            }
+            else{
+                elemento++;
+            }
+
+        }
+    }
+    return arreglo;
+}
+
+
+void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int dimensionMatrixToRotate, int AmountConditions, int *ptrStates, int *ptrorden){
+    //esta funcion recibira el arreglo con las matrices, la posicion a comparar, tambien dos arreglos, uno para almacenar los estados y otro
+    //para almacenar los ordenes de la matriz, para la impresion de la cerradura al final
+    //tambien recibira el arreglo que contiene las condiciones para poder comparar y la cantidad de condiciones que se deberan evaluar
+    //retornara true en caso de que la condicion se haya cumplido
+    int state = 0, contRotations = 0, cont1 = 0, cont2 = 1, WichCond = 0, InicialSize;
+
+    ptrStates[WichCond] = state;
+    ptrorden[WichCond] = dimensionMatrixToRotate;
+    InicialSize = dimensionMatrixToRotate;
+    while(WichCond<AmountConditions){
+        switch(ptrCond[WichCond]){
+        case 0: while(true){
+                if (ptrPrincipal[cont1][Pos1][Pos2] == ptrPrincipal[cont2][Pos1][Pos2]){
+                    ptrStates[WichCond+1] = state;
+                    ptrorden[WichCond+1] = dimensionMatrixToRotate;
+                    break;
+                }
+                else{
+                    state++;
+                    if(contRotations<3){
+                        contRotations++;
+                        ptrPrincipal = rotations(ptrPrincipal,dimensionMatrixToRotate,cont2);
+                    }
+                    else{
+                        ptrPrincipal = cambiar_dimension_matriz(ptrPrincipal,dimensionMatrixToRotate + 2,cont2,dimensionMatrixToRotate);
+                        dimensionMatrixToRotate += 2;
+                        state = 0;
+                        contRotations = 0;
+                    }
+                }
+            }
+            break;
+        case 1: while(true){
+                if (ptrPrincipal[cont1][Pos1][Pos2] < ptrPrincipal[cont2][Pos1][Pos2]){
+                    ptrStates[WichCond+1] = state;
+                    ptrorden[WichCond+1] = dimensionMatrixToRotate;
+                    break;
+                }
+                else{
+                    state++;
+                    if(contRotations<3){
+                        contRotations++;
+                        ptrPrincipal = rotations(ptrPrincipal,dimensionMatrixToRotate,cont2);
+                    }
+                    else{
+                        ptrPrincipal = cambiar_dimension_matriz(ptrPrincipal,dimensionMatrixToRotate + 2,cont2,dimensionMatrixToRotate);
+                        dimensionMatrixToRotate += 2;
+                        state = 0;
+                        contRotations = 0;
+                    }
+                }
+            }
+            break;
+        case -1: while(true){
+                if (ptrPrincipal[cont1][Pos1][Pos2] > ptrPrincipal[cont2][Pos1][Pos2]){
+                    ptrStates[WichCond+1] = state;
+                    ptrorden[WichCond+1] = dimensionMatrixToRotate;
+                    break;
+                }
+                else{
+                    state++;
+                    if(contRotations<3){
+                        contRotations++;
+                        ptrPrincipal = rotations(ptrPrincipal,dimensionMatrixToRotate,cont2);
+                    }
+                    else{
+                        ptrPrincipal = cambiar_dimension_matriz(ptrPrincipal,dimensionMatrixToRotate + 2,cont2,dimensionMatrixToRotate);
+                        dimensionMatrixToRotate += 2;
+                        state = 0;
+                        contRotations = 0;
+                    }
+                }
+            }
+            break;
+        }
+        state = 0;
+        contRotations = 0;
+        WichCond++;
+        cont1 = cont2;
+        cont2++;
+        dimensionMatrixToRotate = InicialSize;
+    }
+    impresion(ptrorden,ptrStates,AmountConditions+1);
+    //falta eliminar ptrstates, ptrorden, ptrprincipal, ptrcond
 }
 

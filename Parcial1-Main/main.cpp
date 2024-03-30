@@ -8,14 +8,16 @@ int main(){
     //Menu para guardar variables a usar mas adelante, como las condiciones, la posicion y el numero de matrices
     //verificaciones de que las entradas de la clave sean correctas
 
-    int *ptrToKey; int z, m, n, cond, dimMatrix;
+    int *ptrToKey, *dimension, *ptrStates, ***matrix, *ptrorden; int z, m, n, cond, dimMatrix, cont = 0;
 
     cout<<"Ingrese la clave K(m,n,cond1,cond2,...,condz) para la cual quiere generar una cerradura X"<<endl;
-    cout<<"-----------------------------------------------------------------------------------------"<<endl;
+    cout<<"-------------------------------------------------------------------------------------------"<<endl;
     while(true){
         cout<<"Ingrese la cantidad de condiciones que va a usar: ";cin>>z;cout<<endl;
         if (z>1){
             ptrToKey = new int[z];
+            ptrStates = new int[z+1];
+            ptrorden = new int[z+1];
             break;
         }
         else{
@@ -24,7 +26,7 @@ int main(){
     }
     while (true){
         cout<<"Ingrese m (posicion en filas): ";cin>>m;cout<<endl;
-        if (m>0){
+        if (m>=0){
             break;
         }
         else{
@@ -33,7 +35,7 @@ int main(){
     }
     while (true){
         cout<<"Ingrese n (posicion en columnas): ";cin>>n;cout<<endl;
-        if (n>0){
+        if (n>=0){
             break;
         }
         else{
@@ -73,9 +75,32 @@ int main(){
             }
         }
     }
-    cout<<"Clave ingresada correctamente, trabajaremos para crear la cerrdura X..."<<endl;
-    cout<<"-----------------------------------------------------------------------------------------"<<endl;
-    //recordar liberar memoria cuando ya no se vaya a usar mas las condiciones (final del programa)
+    cout<<"Clave ingresada correctamente: ";
+    cout<<"clave K(";
+    for(int i=0;i<z+2;i++){
+        if(cont == 0){
+            cout<<m<<",";
+        }
+        else if (cont == 1){
+            cout<<n<<",";
+        }
+        else{
+            for(int j=0;j<z;j++){
+                if (j == z-1){
+                    cout<<ptrToKey[j];
+                }
+                else{
+                    cout<<ptrToKey[j]<<",";
+                }
+            }
+            break;
+        }
+        cont++;
+    }
+    cout<<") trabajaremos para crear la cerrdura X..."<<endl;
+    cout<<"-------------------------------------------------------------------------------------------"<<endl;
 
+    matrix = generar_matrices(z+1,dimMatrix);
+    compareFunction(matrix,ptrToKey,m,n,dimMatrix,z,ptrStates,ptrorden);
 }
 
