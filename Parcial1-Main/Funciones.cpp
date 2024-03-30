@@ -2,13 +2,13 @@
 
 using namespace std;
 
-int*** generar_matrices(int n_matrix,int tamInicial){
+int*** generar_matrices(int n_matrix,int tam_inicial){
     int elemento;//numeros de cada posicion en la matriz
 
     // Reserva de memoria para la primera dimensión
     int ***arreglo = new int**[n_matrix];
     // Reserva de memoria para las otras dos dimensiones
-    for (int i = 0; i < n_matrix; ++i) {
+    for (int i = 0; i < n_matrix; ++i) 
         arreglo[i] = new int*[tamInicial];//tamaño depende de la posicion i del arreglo dimen
         elemento=1;
         for (int j = 0; j < tamInicial; ++j) {
@@ -184,4 +184,24 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
 
 
 
+
+void impresion(int *dimension_final,int *rotacion_final,int n_matrix){
+    /*funcion que imprime la cerradura X y el estado en el que quedo cada matriz*/
+
+    cout<<"cerradura X(";
+    for(int i=0;i<n_matrix;i++){
+        if(i!=(n_matrix-1)){
+            cout<<*(dimension_final+i)<<",";
+        }
+        else{
+            cout<<*(dimension_final+i);
+        }
+    }
+    cout<<")"<<endl;
+
+    for(int i=0;i<n_matrix;i++){
+        cout<<"M"<<i+1<<"("<<*(dimension_final+i)<<"x"<<*(dimension_final+i)<<")"<<" -> Estado: "<<*(rotacion_final+i)<<endl;
+    }
+
+}
 
