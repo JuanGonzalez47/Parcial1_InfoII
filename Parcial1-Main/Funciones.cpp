@@ -53,9 +53,9 @@ void rotations(int ***arrSup, int dim, int NumberMatrix){
     for(int i=0;i<n;i++){
         arrSup1[i] = new int[dim];
     }
-    for(int i=0; i<n;i++){
+    for(int i=n-1; i>=0;i--){
         for(int j=0; j<n; j++){
-            arrSup1[i][j] = arrSup[NumberMatrix][n-1-j][i];
+            arrSup1[j][i] = arrSup[NumberMatrix][i][n-1-j];
         }
     }
     for(int i=0;i<n;i++){
@@ -64,17 +64,6 @@ void rotations(int ***arrSup, int dim, int NumberMatrix){
     delete[] arrSup[NumberMatrix];
     arrSup[NumberMatrix] = arrSup1;
 
-    /*cout<<"matriz rotada";
-
-    for (int i = 0; i <4; ++i) {
-        for (int j = 0; j < n; ++j) {
-            for (int k = 0; k < n; ++k) {
-                cout <<  *(*(*(arrSup+i)+j)+k) << " ";
-            }
-            cout << endl;
-        }
-        cout << endl;
-    }*/
 }
 
 void imprimir_cerradura(int *dimension_final,int *rotacion_final,int n_matrix){
@@ -143,7 +132,7 @@ void cambiar_dimension_matriz(int ***arreglo,int dimen,int numberMatrix,int tam_
 }
 
 
-void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int dimensionMatrixToRotate, int AmountConditions, int *ptrStates, int *ptrorden){
+bool compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int dimensionMatrixToRotate, int AmountConditions, int *ptrStates, int *ptrorden){
     //esta funcion recibira el arreglo con las matrices, la posicion a comparar, tambien dos arreglos, uno para almacenar los estados y otro
     //para almacenar los ordenes de la matriz, para la impresion de la cerradura al final
     //tambien recibira el arreglo que contiene las condiciones para poder comparar y la cantidad de condiciones que se deberan evaluar
@@ -160,6 +149,8 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
     //se le resta uno porque las posiciones de un arreglo empienzan desde 0 y las de una matriz desde 1
     Pos1-=1;
     Pos2-=1;
+
+
     while(WichCond<AmountConditions){
         switch(ptrCond[WichCond]){
         case 0: while(true){
@@ -195,8 +186,8 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
                     dimensionMatrixToRotate += 2;
                 }
 
-                if (ptrPrincipal[cont1][Pos1][Pos2] > ptrPrincipal[cont2][Pos1][Pos2]){
-                    cout<<ptrPrincipal[cont1][Pos1][Pos2]<<" > "<<ptrPrincipal[cont2][Pos1][Pos2]<<endl;
+                if (ptrPrincipal[cont1][Pos1][Pos2] < ptrPrincipal[cont2][Pos1][Pos2]){
+
                     ptrStates[WichCond+1] = state;
                     ptrorden[WichCond+1] = dimensionMatrixToRotate;
                     break;
@@ -224,8 +215,8 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
                     dimensionMatrixToRotate += 2;
                 }
 
-                if (ptrPrincipal[cont1][Pos1][Pos2] < ptrPrincipal[cont2][Pos1][Pos2]){
-                    cout<<ptrPrincipal[cont1][Pos1][Pos2]<<" < "<<ptrPrincipal[cont2][Pos1][Pos2]<<endl;
+                if (ptrPrincipal[cont1][Pos1][Pos2] > ptrPrincipal[cont2][Pos1][Pos2]){
+
                     ptrStates[WichCond+1] = state;
                     ptrorden[WichCond+1] = dimensionMatrixToRotate;
                     break;
@@ -237,15 +228,25 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
                         rotations(ptrPrincipal,dimensionMatrixToRotate,cont2);
                     }
                     else{
-                         cambiar_dimension_matriz(ptrPrincipal,dimensionMatrixToRotate + 2,cont2,dimensionMatrixToRotate);
-                        dimensionMatrixToRotate += 2;
-                        state = 0;
-                        contRotations = 0;
+
+                        /*Si el programa no encuentra un numero menor en la siguiente matriz en su dimension inicial y depsues de haber pasado por todos
+                         * los estados, debido que la matriz aumentara el orden nunca encontra dicho numero ya que este aumentara su valor, en consecuencia
+                         * nunca se cumplira la condicion*/
+
+
+                        cout<<"No se ha podido encontrar una cerradura para tu clave debido a que no su cumplio la condicion: "<<WichCond+1<<" : (-1) "<<endl;
+                        cout<<"ingrese una clave diferente (consejo: No ingrese demasiados -1 de seguido) "<<endl;
+                        cout<<"---------------------------------------------------------------------------------------------------------------------"<<endl;
+                        for(int i=WichCond+1;i<AmountConditions;i++){
+                            ptrorden[i] = dimensionMatrixToRotate;
+                        }
+                        return true;
                     }
                 }
             }
             break;
         }
+
         WichCond++;
         //cambiar posicion
         cont1++;
@@ -256,6 +257,7 @@ void compareFunction(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2, int 
         contRotations = 0;
     }
     imprimir_cerradura(ptrorden,ptrStates,AmountConditions+1);
+    return false;
 }
 
 
@@ -284,7 +286,7 @@ void imprimir_clave(int *ptrToKey,int m,int n,int z){
         cont++;
     }
     cout<<") trabajaremos para crear la cerrdura X..."<<endl;
-    cout<<"-------------------------------------------------------------------------------------------"<<endl;
+    cout<<"---------------------------------------------------------------------------------------------------------------------"<<endl;
 }
 
 
