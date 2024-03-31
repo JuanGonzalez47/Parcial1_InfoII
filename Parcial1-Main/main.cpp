@@ -8,20 +8,22 @@ int main(){
     //Menu para guardar variables a usar mas adelante, como las condiciones, la posicion y el numero de matrices
     //verificaciones de que las entradas de la clave sean correctas
 
-    int *ptrToKey, *dimension, *ptrStates, ***matrix, *ptrorden; int z, m, n, cond, dimMatrix, cont = 0;
+    int *ptrToKey, *ptrStates, *ptrorden, ***arreglo;
+    int z, m, n, cond, dimMatrix;
 
     cout<<"Ingrese la clave K(m,n,cond1,cond2,...,condz) para la cual quiere generar una cerradura X"<<endl;
     cout<<"-------------------------------------------------------------------------------------------"<<endl;
     while(true){
         cout<<"Ingrese la cantidad de condiciones que va a usar: ";cin>>z;cout<<endl;
-        if (z>1){
+        if (z>=1){
+            //crear arreglos
             ptrToKey = new int[z];
             ptrStates = new int[z+1];
             ptrorden = new int[z+1];
             break;
         }
         else{
-            cout<<"Ingrese mas de una condicion"<<endl;
+            cout<<"Ingrese una condicion o mas "<<endl;
         }
     }
     while (true){
@@ -42,7 +44,7 @@ int main(){
             cout<<"Ingrese un numero entero positivo"<<endl;
         }
     }
-    //si m y n son menores que 3, las matrices que debemos de generar son las de 3x3, si uno esmayor que otro y ese mayor es par debemos sumar 1 y esa
+    //si m y n son menores o iguales a 3, las matrices que debemos de generar son las de 3x3, si uno es mayor que otro y ese mayor es par debemos sumar 1 y esa
     //sera la dimension de las matrices
     if(m<=3 && n<=3){
         dimMatrix = 3;
@@ -55,7 +57,7 @@ int main(){
             dimMatrix = m;
         }
     }
-    else if (n>=m){
+    else{
         if(n%2 == 0){
             dimMatrix = n+1;
         }
@@ -63,6 +65,13 @@ int main(){
             dimMatrix = n;
         }
     }
+    //verificar que la posicion no coincida con el espacio en blanco
+    if( n==m && (dimMatrix/2)==(m-1)){
+        dimMatrix+=2;
+    }
+
+
+
     for(int i = 1;i<=z;i++){
         while(true){
             cout<<"Ingrese la condicion numero "<<i<<": ";cin>>cond;cout<<endl;
@@ -75,32 +84,11 @@ int main(){
             }
         }
     }
-    cout<<"Clave ingresada correctamente: ";
-    cout<<"clave K(";
-    for(int i=0;i<z+2;i++){
-        if(cont == 0){
-            cout<<m<<",";
-        }
-        else if (cont == 1){
-            cout<<n<<",";
-        }
-        else{
-            for(int j=0;j<z;j++){
-                if (j == z-1){
-                    cout<<ptrToKey[j];
-                }
-                else{
-                    cout<<ptrToKey[j]<<",";
-                }
-            }
-            break;
-        }
-        cont++;
-    }
-    cout<<") trabajaremos para crear la cerrdura X..."<<endl;
-    cout<<"-------------------------------------------------------------------------------------------"<<endl;
 
-    matrix = generar_matrices(z+1,dimMatrix);
-    compareFunction(matrix,ptrToKey,m,n,dimMatrix,z,ptrStates,ptrorden);
+
+    imprimir_clave(ptrToKey,m,n,z);
+    arreglo = generar_matrices(z+1,dimMatrix);
+    compareFunction(arreglo,ptrToKey,m,n,dimMatrix,z,ptrStates,ptrorden);
+    liberar_memoria(arreglo,ptrStates,ptrorden,ptrToKey,z);
 }
 
