@@ -4,8 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        Funciones.cpp \
-        main.cpp
+        main.cpp \
+        principal_fuctions.cpp \
+        verifications_and_impressions.cpp
 
 HEADERS += \
     Prototipos.h

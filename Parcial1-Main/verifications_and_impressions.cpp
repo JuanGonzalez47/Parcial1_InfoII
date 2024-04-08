@@ -141,18 +141,18 @@ bool validar_regla(int ***ptrPrincipal, int *ptrCond, int Pos1, int Pos2,int Amo
             }
             break;
         }
+        WichCond++;
         //posicion anterior
         paux1=Pos1;
         paux2=Pos2;
         //nuevas posiciones
-        if(*(ptrorden+WichCond+1) < *(ptrorden+WichCond+2)){
-            Pos1=Pos1+(((*(ptrorden+WichCond+2))-(*(ptrorden+WichCond+1)))/2);
-            Pos2=Pos2+(((*(ptrorden+WichCond+2))-(*(ptrorden+WichCond+1)))/2);
+        if(*(ptrorden+WichCond) < *(ptrorden+WichCond+1)){
+            Pos1=Pos1+(((*(ptrorden+WichCond+1))-(*(ptrorden+WichCond)))/2);
+            Pos2=Pos2+(((*(ptrorden+WichCond+1))-(*(ptrorden+WichCond)))/2);
         }else{
-            Pos1=Pos1-(((*(ptrorden+WichCond+1))-(*(ptrorden+WichCond+2)))/2);
-            Pos2=Pos2-(((*(ptrorden+WichCond+1))-(*(ptrorden+WichCond+2)))/2);
+            Pos1=Pos1-(((*(ptrorden+WichCond))-(*(ptrorden+WichCond+1)))/2);
+            Pos2=Pos2-(((*(ptrorden+WichCond))-(*(ptrorden+WichCond+1)))/2);
         }
-        WichCond++;
         //cambiar posicion
         cont1++;
         cont2++;
@@ -316,7 +316,7 @@ void principal_menu(int *ptrToKey,int * ptrStates,int * ptrorden,int *** arreglo
 
                 for (int i = 0; i < z+1; i++){
                     cout<<"Ingrese la dimension de la matriz numero "<<i+1<<": ";cin>>dimension;cout<<endl;
-                    if(dimension%2==0){
+                    if(dimension%2==0 || dimension==1){
                         cout<<"dimensión no valida, ingrese solo dimensiones pares"<<endl;
                         i--;
                     }
@@ -452,7 +452,3 @@ void principal_menu(int *ptrToKey,int * ptrStates,int * ptrorden,int *** arreglo
     }
     cout<<"---------------------------------------------------------------------------------------------------------------------"<<endl;
 }
-
-
-
-

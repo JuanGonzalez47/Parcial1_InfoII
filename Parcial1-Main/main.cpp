@@ -15,5 +15,3 @@ int main(){
     principal_menu(ptrToKey, ptrStates, ptrorden, arreglo, z, m, n,cond, dimMatrix, end);
 
 }
-
-
